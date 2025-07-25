@@ -24,7 +24,5 @@ services:
 
     restart: always
 
-
 volumes:
   postgres-data:
-  dbeaver-workspace:
