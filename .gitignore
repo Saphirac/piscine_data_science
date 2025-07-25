@@ -1,0 +1,6 @@
+.env
+myenv
+__pycache__/
+day00/ex02/data_2022_oct.csv
+day00/ex03/data
+day00/ex04/data
