@@ -1,0 +1,19 @@
+WITH NumberedEvents AS (
+    SELECT
+        ctid, -- A unique physical identifier for each row.
+        ROW_NUMBER() OVER (
+            PARTITION BY
+                event_type,
+                product_id,
+                price,
+                user_id,
+                user_session
+            ORDER BY
+                event_time ASC
+        ) as rn
+    FROM
+        public.customers
+)
+SELECT *
+FROM NumberedEvents
+WHERE rn > 1;

@@ -11,6 +11,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
 
+    command:
+      # -c sets a configuration parameter. Here we increase the WAL size to 4GB.
+      - "postgres"
+      - "-c"
+      - "max_wal_size=4GB"
+
     # allows you to connect to the database using localhost:5432.
     ports:
       - "5432:5432"
