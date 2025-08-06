@@ -1,6 +1,7 @@
 library(DBI)
 library(RPostgres)
 library(tidyverse)
+library(palmerpenguins)
 
 db_host <- "localhost"
 db_port <- 5432
@@ -27,14 +28,10 @@ con <- tryCatch(
 )
 
 if (!is.null(con)) {
-  # Define the SQL query you want to execute.
-  # This example selects all data from the 'customers' table.
-  sql_query <- "SELECT event_type FROM public.customers_enriched;"
-
-
   customers_df <- tryCatch(
     {
-      dbGetQuery(con, sql_query)
+      dbGetQuery(con, "SELECT event_time, event_type, price,
+      user_id FROM public.customers_enriched;")
     },
     error = function(e) {
       message("Failed to execute query.
@@ -44,12 +41,10 @@ if (!is.null(con)) {
   )
 
   # Step 5: Close the database connection.
-  # This is a critical step to release resources on the database server.
   dbDisconnect(con)
   message("Database connection closed successfully.")
 
   # Step 6: Verify the imported data.
-  # If the query was successful, display the first few rows of the data frame.
   if (!is.null(customers_df)) {
     print("Successfully imported data. Displaying the first 6 rows:")
     print(head(customers_df))
@@ -79,6 +74,6 @@ event_summary <- customers_df %>%
 
 
 percent <- event_summary[["percentage"]]
-label_text <- event_summary[["label_text"]]
+label <- event_summary[["label_text"]]
 
-pie(percent, labels = label_text)
+pie(percent, label)
