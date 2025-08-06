@@ -77,7 +77,8 @@ event_summary <- customers_df %>%
     )
   )
 
-db_name <- "piscineds"
-db_name
 
-# pie(customers_df)
+percent <- event_summary[["percentage"]]
+label_text <- event_summary[["label_text"]]
+
+pie(percent, labels = label_text)
