@@ -1,0 +1,20 @@
+A doc to install everything on my personnal computer
+
+libblas-dev liblapack-dev gfortran
+cmake libnlopt-dev libgsl-dev
+libcurl4-openssl-dev libxml2-dev
+libfontconfig1-dev libharfbuzz-dev libfribidi-dev libpng-dev libjpeg-dev libtiff-dev
+software-properties-common dirmngr
+
+sudo apt-get update && sudo apt-get install build-essential gfortran libblas-dev liblapack-dev cmake libnlopt-dev libgsl-dev libcurl4-openssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libpng-dev libjpeg-dev libtiff-dev
+
+install.packages("tidyverse")
+install.packages("DBI")
+install.packages("RPostgres")
+install.packages("OlinkAnalyze")
+install.packages("lubridate")
+install.packages("scales")
+install.packages("palmerpenguins")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("tidyr")
