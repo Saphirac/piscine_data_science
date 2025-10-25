@@ -9,7 +9,4 @@ CREATE TABLE public.data_2022_oct (
     user_session    UUID                -- Type 6: Universally Unique Identifier
 );
 
-COPY public.data_2022_oct
-FROM '/data/data_2022_oct.csv'
-DELIMITER ','
-CSV HEADER;
+COPY public.data_2022_oct FROM '/data/customer/data_2022_oct.csv' DELIMITER ',' CSV HEADER;

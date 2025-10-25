@@ -13,7 +13,6 @@ for csv_file in "$CSV_DIR"/*.csv; do
 
     header=$(head -n 1 "$csv_file")
 
-    # --- Logic to build column definitions with specific types ---
     column_defs=""
     IFS=','
     for col_name in $header; do

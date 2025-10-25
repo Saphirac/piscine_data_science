@@ -1,6 +1,6 @@
 .env
 myenv
 __pycache__/
-day0*/ex0*/data
-
+/data
+*:Zone.Identifier
 .Rproj.user

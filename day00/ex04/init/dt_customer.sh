@@ -1,19 +1,20 @@
 #!/bin/bash
+# This script is executed when the PostgreSQL container is first started.
 
-set -e # Exit immediately if a command exits with a non-zero status.
+set -e
 
+# The directory inside the container where the CSV files are mounted.
 CSV_DIR="/data/customer"
 
+# Loop through each .csv file in the specified directory.
 for csv_file in "$CSV_DIR"/*.csv; do
     [ -e "$csv_file" ] || continue
 
     table_name=$(basename "$csv_file" .csv)
-    # Sanitize the table name to allow only alphanumeric characters and underscores.
+    # Clean the table name
     table_name=$(echo "$table_name" | sed 's/[^a-zA-Z0-9_]//g')
-
     header=$(head -n 1 "$csv_file")
 
-    # --- Logic to build column definitions with specific types ---
     column_defs=""
     IFS=','
     for col_name in $header; do
@@ -33,8 +34,8 @@ for csv_file in "$CSV_DIR"/*.csv; do
             user_session)
                 col_type="UUID"
                 ;;
-            *)
-                col_type="TEXT"
+            *) #default case
+                col_type="VARCHAR(255)"
                 ;;
         esac
 
@@ -50,6 +51,7 @@ for csv_file in "$CSV_DIR"/*.csv; do
 
     echo "Creating table '${table_name}' from file '${csv_file}'..."
 
+    # Use psql to execute the CREATE TABLE and COPY commands.
     psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
         DROP TABLE IF EXISTS public.${table_name};
         ${create_table_sql}
