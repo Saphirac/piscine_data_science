@@ -5,7 +5,7 @@ services:
     container_name: my_postgres_db
     env_file: .env
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - /var/lib/postgresql/data
     restart: always
     networks:
       - app-network
@@ -23,17 +23,13 @@ services:
     ports:
       - "5050:80"
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - /var/lib/pgadmin
     restart: always
     networks:
       - app-network
     depends_on:
       postgres:
         condition: service_healthy
-
-volumes:
-  postgres-data:
-  pgadmin-data:
 
 networks:
   app-network:
