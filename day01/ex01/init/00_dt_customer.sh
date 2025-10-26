@@ -2,7 +2,7 @@
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
-CSV_DIR="/data/item"
+CSV_DIR="/data/customer"
 
 for csv_file in "$CSV_DIR"/*.csv; do
     [ -e "$csv_file" ] || continue
@@ -13,21 +13,25 @@ for csv_file in "$CSV_DIR"/*.csv; do
 
     header=$(head -n 1 "$csv_file")
 
+    # --- Logic to build column definitions with specific types ---
     column_defs=""
     IFS=','
     for col_name in $header; do
         case "$col_name" in
+            event_time)
+                col_type="TIMESTAMPTZ"
+                ;;
             product_id)
                 col_type="INTEGER"
                 ;;
-            category_id)
+            price)
+                col_type="NUMERIC(10, 2)"
+                ;;
+            user_id)
                 col_type="BIGINT"
                 ;;
-            category_code)
-                col_type="TEXT"
-                ;;
-            brand)
-                col_type="TEXT"
+            user_session)
+                col_type="UUID"
                 ;;
             *)
                 col_type="TEXT"
