@@ -27,8 +27,8 @@ BEGIN
 
     RAISE NOTICE 'Using table ''%'' as a template for the customers table structure.', first_table_name;
 
-    DROP TABLE IF EXISTS public.customers_dirty;
-    EXECUTE format('CREATE TABLE public.customers_dirty AS SELECT * FROM public.%I WITH NO DATA', first_table_name);
+    DROP TABLE IF EXISTS public.customers;
+    EXECUTE format('CREATE TABLE public.customers AS SELECT * FROM public.%I WITH NO DATA', first_table_name);
 
     FOR t_name IN
         SELECT table_name
@@ -38,11 +38,11 @@ BEGIN
     LOOP
         -- The RAISE NOTICE command is helpful for debugging; it prints to the Docker logs.
         RAISE NOTICE 'Merging data from table: %', t_name;
-        EXECUTE format('INSERT INTO public.customers_dirty SELECT * FROM public.%I', t_name);
+        EXECUTE format('INSERT INTO public.customers SELECT * FROM public.%I', t_name);
     END LOOP;
 END
 \$\$;
 
 EOSQL
 
-echo "Successfully merged all data tables into the 'customers_dirty' table."
+echo "Successfully merged all data tables into the 'customers' table."

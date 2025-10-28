@@ -25,11 +25,9 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     LEFT JOIN
         public.item AS i ON c.product_id = i.product_id;
 
-    -- Step 2: Drop the original, non-enriched 'customers' table.
-    -- donotDROP TABLE public.customers;
+    DROP TABLE public.customers;
 
-    -- Step 3: Rename the new, enriched table to the original name.
-    -- donotALTER TABLE public.customers_enriched RENAME TO customers;
+    ALTER TABLE public.customers_enriched RENAME TO customers;
 
 EOSQL
 

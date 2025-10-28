@@ -1,6 +1,8 @@
 services:
   postgres:
-    build: .  # Builds from local Dockerfile
+    build: 
+      context: ./postgres
+      dockerfile: Dockerfile
     container_name: my_postgres_db
     env_file: .env
     volumes:
@@ -16,7 +18,9 @@ services:
       start_period: 5s
 
   pgadmin:
-    image: dpage/pgadmin4
+    build:
+      context: ./pgadmin
+      dockerfile: Dockerfile
     container_name: my_pgadmin
     env_file: .env
     ports:

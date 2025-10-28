@@ -10,7 +10,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 
     -- Step 1: Create a new, clean table containing only the unique rows.
     -- This is a single, highly optimized operation.
-    CREATE TABLE public.customers AS
+    CREATE TABLE public.customers_clean AS
     WITH NumberedEvents AS (
         SELECT
             *, -- Select all original columns
@@ -25,7 +25,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
                     event_time ASC
             ) as rn
         FROM
-            public.customers_dirty
+            public.customers
     )
     SELECT
         event_time,
@@ -37,8 +37,8 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     FROM NumberedEvents
     WHERE rn = 1; -- Only select the first occurrence of each event.
 
-    -- Step 2: Drop the original, bloated table.
-    -- have to check both before DROP TABLE public.customers_dirty;
+    DROP TABLE public.customers;
+    ALTER TABLE public.customers_clean RENAME TO customers;
 
 EOSQL
 
